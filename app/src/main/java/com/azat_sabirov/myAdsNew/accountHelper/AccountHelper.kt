@@ -80,7 +80,6 @@ class AccountHelper(private val act: MainActivity) {
                         val exception = task.exception as FirebaseAuthInvalidUserException
                         if (exception.errorCode == FireBaseAuthConstants.ERROR_USER_NOT_FOUND){
                             Toast.makeText(act, R.string.sign_up_or_sign_in_with_google, Toast.LENGTH_LONG).show()
-//                        Log.d("MyLog", "Exception: ${exception.errorCode}")
                         }
                     }
 
