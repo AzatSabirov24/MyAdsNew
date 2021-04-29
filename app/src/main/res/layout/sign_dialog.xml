@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.gms.common.internal.SignInButtonImpl
+        android:id="@+id/btResetPass"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/common_google_signin_btn_icon_dark_normal_background"
+        android:text="@string/forget_password"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/edSignEmail"
+        app:layout_constraintStart_toStartOf="@+id/edSignEmail"
+        app:layout_constraintTop_toBottomOf="@+id/btSignGoogle" />
+
+    <TextView
+        android:id="@+id/tvSignUp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/ac_sign_up"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/edSignEmail"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:background="@drawable/common_google_signin_btn_icon_dark_normal_background"
+        android:ems="10"
+        android:hint="@string/sign_email"
+        android:inputType="textPersonName"
+        android:padding="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvSignUp" />
+
+    <EditText
+        android:id="@+id/edSignPassword"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/common_google_signin_btn_icon_dark_normal_background"
+        android:ems="10"
+        android:hint="@string/sign_password"
+        android:inputType="textPersonName"
+        android:padding="10dp"
+        app:layout_constraintEnd_toEndOf="@+id/edSignEmail"
+        app:layout_constraintStart_toStartOf="@+id/edSignEmail"
+        app:layout_constraintTop_toBottomOf="@+id/edSignEmail" />
+
+    <com.google.android.gms.common.internal.SignInButtonImpl
+        android:id="@+id/btSign"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/common_google_signin_btn_icon_dark_normal_background"
+        android:onClick="signUpIn"
+        android:text="@string/sign_up_action"
+        app:layout_constraintEnd_toEndOf="@+id/edSignPassword"
+        app:layout_constraintStart_toStartOf="@+id/edSignPassword"
+        app:layout_constraintTop_toBottomOf="@+id/edSignPassword" />
+
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/btSignGoogle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/common_google_signin_btn_icon_dark_normal_background"
+        android:text="Sign"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/btSign"
+        app:layout_constraintStart_toStartOf="@+id/btSign"
+        app:layout_constraintTop_toBottomOf="@+id/btSign"
+        app:layout_constraintVertical_bias="0.0" />
+</androidx.constraintlayout.widget.ConstraintLayout>

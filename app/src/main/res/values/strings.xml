@@ -1,0 +1,34 @@
+<resources>
+    <string name="app_name">Ads</string>
+    <!--    Menu drawer strings-->
+    <string name="ad_cat1">Обьявления</string>
+    <string name="ad_my_ads">Мои объявления</string>
+    <string name="ad_car">Машины</string>
+    <string name="PC">Компьютеры</string>
+    <string name="smartPhone">Смартфоны</string>
+    <string name="dm">Бытовая техника</string>
+    <string name="ad_cat2">Аккаунт</string>
+    <string name="ac_sign_up">Регистрация</string>
+    <string name="ac_sign_in">Вход</string>
+    <string name="ac_sign_out">Выход</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+    <string name="not_reg">Войдите или зарегистрируйтесь</string>
+    <!--    Sign dialog-->
+    <string name="sign_email">Введите email</string>
+    <string name="empty_edEmail_and_password">Пустой email или пароль</string>
+    <string name="email_reset_password_was_send">Вам на почту отправлено сообщение для восстановления пароля</string>
+    <string name="sign_password">Введите пароль</string>
+    <string name="sign_in_action">Войти</string>
+    <string name="sign_up_action">Зарегистрироваться</string>
+    <string name="forget_password">Забыли пароль?</string>
+    <string name="sign_up_error">Ошибка регистрации</string>
+    <string name="send_verification_email_error">Не удалось отправить email для подтверждения</string>
+    <string name="send_verification_done">На вашу почту было отправлено письмо для подтверждения</string>
+    <string name="wrong_email_or_password">Неверный email или пароль</string>
+    <string name="success_sign_in">Успешный вход</string>
+    <string name="dialog_reset_email_message">Для восстановления пароля укажите email адрес</string>
+    <string name="link_done">Email успешно подключен к Google аккаунту</string>
+    <string name="enter_to_g">У вас уже есть аккаунт с таким Email адресом, войдите по нему</string>
+    <string name="sign_up_or_sign_in_with_google">Зарегистрируйтесь или войдите по Google аккаунту</string>
+</resources>
