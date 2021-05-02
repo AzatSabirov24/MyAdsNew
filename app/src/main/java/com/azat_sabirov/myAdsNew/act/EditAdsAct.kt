@@ -11,13 +11,15 @@ import androidx.appcompat.app.AppCompatActivity
 import com.azat_sabirov.myAdsNew.R
 import com.azat_sabirov.myAdsNew.databinding.ActivityEditAdsBinding
 import com.azat_sabirov.myAdsNew.dialogs.DialogSpinnerHelper
+import com.azat_sabirov.myAdsNew.frag.FragCLoseInterface
+import com.azat_sabirov.myAdsNew.frag.ImageFrag
 import com.azat_sabirov.myAdsNew.utils.CityHelper
 import com.azat_sabirov.myAdsNew.utils.ImagePicker
 import com.fxn.pix.Pix
 import com.fxn.utility.PermUtil
 
 
-class EditAdsAct : AppCompatActivity() {
+class EditAdsAct : AppCompatActivity() , FragCLoseInterface{
     lateinit var rootElement: ActivityEditAdsBinding
     private val dialog = DialogSpinnerHelper()
 
@@ -49,7 +51,7 @@ class EditAdsAct : AppCompatActivity() {
 
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    ImagePicker.getImages(this)
+                    ImagePicker.getImages(this, 3)
                 } else {
                     Toast.makeText(
                         this,
@@ -82,7 +84,14 @@ class EditAdsAct : AppCompatActivity() {
     }
 
     fun onClickGetImages(view: View) {
-        ImagePicker.getImages(this)
+//        ImagePicker.getImages(this)
+        rootElement.scrollViewMain.visibility = View.GONE
+      val fm = supportFragmentManager.beginTransaction()
+        fm.replace(R.id.place_holder, ImageFrag(this))
+        fm.commit()
     }
 
+    override fun onFragClose() {
+        rootElement.scrollViewMain.visibility = View.VISIBLE
+    }
 }
