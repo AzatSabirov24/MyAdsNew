@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -19,7 +18,7 @@ import com.fxn.pix.Pix
 import com.fxn.utility.PermUtil
 
 
-class EditAdsAct : AppCompatActivity() , FragCLoseInterface{
+class EditAdsAct : AppCompatActivity(), FragCLoseInterface {
     lateinit var rootElement: ActivityEditAdsBinding
     private val dialog = DialogSpinnerHelper()
 
@@ -33,10 +32,13 @@ class EditAdsAct : AppCompatActivity() , FragCLoseInterface{
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK && requestCode == ImagePicker.REQUEST_CODE_GET_IMAGES) {
             if (data != null) {
-                val returnValue = data.getStringArrayListExtra(Pix.IMAGE_RESULTS)
-                Log.d("MyLog", "Image: ${returnValue?.get(0)}")
-                Log.d("MyLog", "Image: ${returnValue?.get(1)}")
-                Log.d("MyLog", "Image: ${returnValue?.get(2)}")
+                val returnValues = data.getStringArrayListExtra(Pix.IMAGE_RESULTS)
+                if (returnValues?.size!! > 1) {
+                    rootElement.scrollViewMain.visibility = View.GONE
+                    val fm = supportFragmentManager.beginTransaction()
+                    fm.replace(R.id.place_holder, ImageFrag(this, returnValues))
+                    fm.commit()
+                }
             }
         }
     }
@@ -84,11 +86,8 @@ class EditAdsAct : AppCompatActivity() , FragCLoseInterface{
     }
 
     fun onClickGetImages(view: View) {
-//        ImagePicker.getImages(this)
-        rootElement.scrollViewMain.visibility = View.GONE
-      val fm = supportFragmentManager.beginTransaction()
-        fm.replace(R.id.place_holder, ImageFrag(this))
-        fm.commit()
+        ImagePicker.getImages(this, 3)
+
     }
 
     override fun onFragClose() {
