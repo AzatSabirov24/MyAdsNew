@@ -6,15 +6,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.azat_sabirov.myAdsNew.R
+import com.azat_sabirov.myAdsNew.utils.ItemTouchMoveCallback
 
 class ImageFrag(
     private val fragmentCLoseInterface: FragCLoseInterface,
     private val newList: ArrayList<String>
 ) : Fragment() {
     val adapter = FragRvAdapter()
+    val dragCallback = ItemTouchMoveCallback(adapter)
+    val touchHelper = ItemTouchHelper(dragCallback)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,6 +35,7 @@ class ImageFrag(
             activity?.supportFragmentManager?.beginTransaction()?.remove(this)?.commit()
         }
         val rcImageItem = view.findViewById<RecyclerView>(R.id.rcImageItem)
+        touchHelper.attachToRecyclerView(rcImageItem)
         rcImageItem.layoutManager = LinearLayoutManager(activity)
         rcImageItem.adapter = adapter
         val updateList = ArrayList<SelectRvItem>()

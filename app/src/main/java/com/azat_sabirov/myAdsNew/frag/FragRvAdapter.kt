@@ -8,8 +8,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.azat_sabirov.myAdsNew.R
+import com.azat_sabirov.myAdsNew.utils.ItemTouchMoveCallback
 
-class FragRvAdapter : RecyclerView.Adapter<FragRvAdapter.ImageViewHolder>() {
+class FragRvAdapter : RecyclerView.Adapter<FragRvAdapter.ImageViewHolder>(), ItemTouchMoveCallback.ItemTouchAdapter {
     private val mainArray = ArrayList<SelectRvItem>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {
@@ -23,6 +24,13 @@ class FragRvAdapter : RecyclerView.Adapter<FragRvAdapter.ImageViewHolder>() {
 
     override fun getItemCount(): Int {
        return mainArray.size
+    }
+
+    override fun onMove(startPos: Int, targetPos: Int) {
+       val itemTarget = mainArray[targetPos]
+       mainArray[targetPos] = mainArray[startPos]
+       mainArray[startPos] = itemTarget
+       notifyItemMoved(startPos,targetPos)
     }
 
     class ImageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -41,4 +49,6 @@ class FragRvAdapter : RecyclerView.Adapter<FragRvAdapter.ImageViewHolder>() {
         mainArray.addAll(newList)
         notifyDataSetChanged()
     }
+
+
 }
