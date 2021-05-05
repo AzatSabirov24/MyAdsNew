@@ -10,33 +10,44 @@ import androidx.recyclerview.widget.RecyclerView
 import com.azat_sabirov.myAdsNew.R
 import com.azat_sabirov.myAdsNew.utils.ItemTouchMoveCallback
 
-class FragRvAdapter : RecyclerView.Adapter<FragRvAdapter.ImageViewHolder>(), ItemTouchMoveCallback.ItemTouchAdapter {
-    private val mainArray = ArrayList<SelectRvItem>()
+class FragRvAdapter : RecyclerView.Adapter<FragRvAdapter.ImageViewHolder>(),
+    ItemTouchMoveCallback.ItemTouchAdapter {
+    val mainArray = ArrayList<SelectRvItem>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.select_image_frag_item, parent, false)
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.select_image_frag_item, parent, false)
         return ImageViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
-       holder.setData(mainArray[position])
+        holder.setData(mainArray[position])
     }
 
     override fun getItemCount(): Int {
-       return mainArray.size
+        return mainArray.size
     }
 
     override fun onMove(startPos: Int, targetPos: Int) {
-       val itemTarget = mainArray[targetPos]
-       mainArray[targetPos] = mainArray[startPos]
-       mainArray[startPos] = itemTarget
-       notifyItemMoved(startPos,targetPos)
+        val itemTarget = mainArray[targetPos]
+        val targetItemText = itemTarget.itemText
+        val itemStartText = mainArray[startPos].itemText
+        mainArray[targetPos] = mainArray[startPos]
+        mainArray[startPos].itemText = targetItemText
+        mainArray[startPos] = itemTarget
+        itemTarget.itemText = itemStartText
+
+        notifyItemMoved(startPos, targetPos)
+    }
+
+    override fun onClear() {
+        notifyDataSetChanged()
     }
 
     class ImageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        lateinit var tvTitle : TextView
+        lateinit var tvTitle: TextView
         lateinit var imageView: ImageView
-        fun setData(item: SelectRvItem){
+        fun setData(item: SelectRvItem) {
             tvTitle = itemView.findViewById(R.id.tvTitle)
             imageView = itemView.findViewById(R.id.imageView)
             tvTitle.text = item.itemText
@@ -44,7 +55,7 @@ class FragRvAdapter : RecyclerView.Adapter<FragRvAdapter.ImageViewHolder>(), Ite
         }
     }
 
-    fun updateAdapter(newList: List<SelectRvItem>){
+    fun updateAdapter(newList: List<SelectRvItem>) {
         mainArray.clear()
         mainArray.addAll(newList)
         notifyDataSetChanged()

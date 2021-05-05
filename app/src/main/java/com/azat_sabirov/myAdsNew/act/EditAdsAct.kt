@@ -8,10 +8,12 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.azat_sabirov.myAdsNew.R
+import com.azat_sabirov.myAdsNew.adapters.ImageAdapter
 import com.azat_sabirov.myAdsNew.databinding.ActivityEditAdsBinding
 import com.azat_sabirov.myAdsNew.dialogs.DialogSpinnerHelper
 import com.azat_sabirov.myAdsNew.frag.FragCLoseInterface
 import com.azat_sabirov.myAdsNew.frag.ImageFrag
+import com.azat_sabirov.myAdsNew.frag.SelectRvItem
 import com.azat_sabirov.myAdsNew.utils.CityHelper
 import com.azat_sabirov.myAdsNew.utils.ImagePicker
 import com.fxn.pix.Pix
@@ -21,11 +23,19 @@ import com.fxn.utility.PermUtil
 class EditAdsAct : AppCompatActivity(), FragCLoseInterface {
     lateinit var rootElement: ActivityEditAdsBinding
     private val dialog = DialogSpinnerHelper()
+    val adapter = ImageAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         rootElement = ActivityEditAdsBinding.inflate(layoutInflater)
         setContentView(rootElement.root)
+        init()
+    }
+
+    private fun init() {
+
+       rootElement.vpImages.adapter = adapter
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -90,7 +100,8 @@ class EditAdsAct : AppCompatActivity(), FragCLoseInterface {
 
     }
 
-    override fun onFragClose() {
+    override fun onFragClose(list: ArrayList<SelectRvItem>) {
         rootElement.scrollViewMain.visibility = View.VISIBLE
+        adapter.update(list)
     }
 }

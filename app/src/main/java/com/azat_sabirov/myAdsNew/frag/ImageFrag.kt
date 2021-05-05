@@ -47,8 +47,6 @@ class ImageFrag(
 
     override fun onDetach() {
         super.onDetach()
-        fragmentCLoseInterface.onFragClose()
+        fragmentCLoseInterface.onFragClose(adapter.mainArray)
     }
-
-
 }
