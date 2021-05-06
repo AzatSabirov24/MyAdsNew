@@ -5,6 +5,7 @@ import com.fxn.pix.Options
 import com.fxn.pix.Pix
 
 object ImagePicker {
+    const val MAX_IMAGE_COUNT = 3
     const val REQUEST_CODE_GET_IMAGES = 999
     fun getImages(context: AppCompatActivity, imageCounter: Int) {
         val options = Options.init ()

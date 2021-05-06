@@ -21,6 +21,7 @@ import com.fxn.utility.PermUtil
 
 
 class EditAdsAct : AppCompatActivity(), FragCLoseInterface {
+    private var chooseImageItem: ImageFrag? = null
     lateinit var rootElement: ActivityEditAdsBinding
     private val dialog = DialogSpinnerHelper()
     val adapter = ImageAdapter()
@@ -34,7 +35,7 @@ class EditAdsAct : AppCompatActivity(), FragCLoseInterface {
 
     private fun init() {
 
-       rootElement.vpImages.adapter = adapter
+        rootElement.vpImages.adapter = adapter
 
     }
 
@@ -43,11 +44,16 @@ class EditAdsAct : AppCompatActivity(), FragCLoseInterface {
         if (resultCode == Activity.RESULT_OK && requestCode == ImagePicker.REQUEST_CODE_GET_IMAGES) {
             if (data != null) {
                 val returnValues = data.getStringArrayListExtra(Pix.IMAGE_RESULTS)
-                if (returnValues?.size!! > 1) {
+
+                if (returnValues?.size!! > 1 && chooseImageItem == null) {
+                    chooseImageItem = ImageFrag(this, returnValues)
                     rootElement.scrollViewMain.visibility = View.GONE
                     val fm = supportFragmentManager.beginTransaction()
-                    fm.replace(R.id.place_holder, ImageFrag(this, returnValues))
+                    fm.replace(R.id.place_holder, chooseImageItem!!)
                     fm.commit()
+
+                } else if (chooseImageItem != null) {
+                    chooseImageItem?.updateAdapter(returnValues)
                 }
             }
         }
@@ -97,11 +103,11 @@ class EditAdsAct : AppCompatActivity(), FragCLoseInterface {
 
     fun onClickGetImages(view: View) {
         ImagePicker.getImages(this, 3)
-
     }
 
     override fun onFragClose(list: ArrayList<SelectRvItem>) {
         rootElement.scrollViewMain.visibility = View.VISIBLE
         adapter.update(list)
+        chooseImageItem = null
     }
 }

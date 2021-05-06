@@ -55,11 +55,9 @@ class FragRvAdapter : RecyclerView.Adapter<FragRvAdapter.ImageViewHolder>(),
         }
     }
 
-    fun updateAdapter(newList: List<SelectRvItem>) {
-        mainArray.clear()
+    fun updateAdapter(newList: List<SelectRvItem>, needClearList: Boolean) {
+        if (needClearList) mainArray.clear()
         mainArray.addAll(newList)
         notifyDataSetChanged()
     }
-
-
 }
