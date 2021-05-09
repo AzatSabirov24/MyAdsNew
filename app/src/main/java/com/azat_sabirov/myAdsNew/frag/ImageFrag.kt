@@ -26,7 +26,7 @@ class ImageFrag(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         rootElement = ListImageFragBinding.inflate(inflater)
         return rootElement.root
     }
@@ -37,11 +37,7 @@ class ImageFrag(
         touchHelper.attachToRecyclerView(rootElement.rcImageItem)
         rootElement.rcImageItem.layoutManager = LinearLayoutManager(activity)
         rootElement.rcImageItem.adapter = adapter
-        val updateList = ArrayList<SelectRvItem>()
-        for (n in 0 until newList.size) {
-            updateList.add(SelectRvItem(n.toString(), newList[n]))
-        }
-        adapter.updateAdapter(updateList,true)
+        adapter.updateAdapter(newList,true)
     }
 
     override fun onDetach() {
@@ -61,7 +57,7 @@ class ImageFrag(
 
         addImageItem.setOnMenuItemClickListener {
             val imageCount = ImagePicker.MAX_IMAGE_COUNT - adapter.mainArray.size
-            ImagePicker.getImages(activity as AppCompatActivity, imageCount)
+            ImagePicker.getImages(activity as AppCompatActivity, imageCount, ImagePicker.REQUEST_CODE_GET_IMAGES)
             true
         }
 
@@ -72,10 +68,12 @@ class ImageFrag(
     }
 
     fun updateAdapter(newList: ArrayList<String>){
-        val updateList = ArrayList<SelectRvItem>()
-        for (n in adapter.mainArray.size until ImagePicker.MAX_IMAGE_COUNT) {
-            updateList.add(SelectRvItem(n.toString(), newList[n - adapter.mainArray.size]))
-        }
-        adapter.updateAdapter(updateList,false)
+
+        adapter.updateAdapter(newList,false)
+    }
+
+    fun editSingleImage(uri: String, pos: Int){
+        adapter.mainArray[pos] = uri
+        adapter.notifyDataSetChanged()
     }
 }

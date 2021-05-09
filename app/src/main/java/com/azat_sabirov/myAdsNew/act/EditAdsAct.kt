@@ -13,7 +13,6 @@ import com.azat_sabirov.myAdsNew.databinding.ActivityEditAdsBinding
 import com.azat_sabirov.myAdsNew.dialogs.DialogSpinnerHelper
 import com.azat_sabirov.myAdsNew.frag.FragCLoseInterface
 import com.azat_sabirov.myAdsNew.frag.ImageFrag
-import com.azat_sabirov.myAdsNew.frag.SelectRvItem
 import com.azat_sabirov.myAdsNew.utils.CityHelper
 import com.azat_sabirov.myAdsNew.utils.ImagePicker
 import com.fxn.pix.Pix
@@ -25,6 +24,7 @@ class EditAdsAct : AppCompatActivity(), FragCLoseInterface {
     lateinit var rootElement: ActivityEditAdsBinding
     private val dialog = DialogSpinnerHelper()
     val adapter = ImageAdapter()
+    var editPos = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,20 +41,22 @@ class EditAdsAct : AppCompatActivity(), FragCLoseInterface {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK && requestCode == ImagePicker.REQUEST_CODE_GET_IMAGES) {
+        if (resultCode == RESULT_OK && requestCode == ImagePicker.REQUEST_CODE_GET_IMAGES) {
             if (data != null) {
                 val returnValues = data.getStringArrayListExtra(Pix.IMAGE_RESULTS)
 
                 if (returnValues?.size!! > 1 && chooseImageItem == null) {
-                    chooseImageItem = ImageFrag(this, returnValues)
-                    rootElement.scrollViewMain.visibility = View.GONE
-                    val fm = supportFragmentManager.beginTransaction()
-                    fm.replace(R.id.place_holder, chooseImageItem!!)
-                    fm.commit()
+
+                    openChooseImageFrag(returnValues)
 
                 } else if (chooseImageItem != null) {
                     chooseImageItem?.updateAdapter(returnValues)
                 }
+            }
+        } else if (resultCode == RESULT_OK && requestCode == ImagePicker.REQUEST_CODE_GET_SINGLE_IMAGES){
+            if (data != null) {
+                val uris = data.getStringArrayListExtra(Pix.IMAGE_RESULTS)
+                chooseImageItem?.editSingleImage(uris?.get(0)!!, editPos)
             }
         }
     }
@@ -69,7 +71,7 @@ class EditAdsAct : AppCompatActivity(), FragCLoseInterface {
 
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    ImagePicker.getImages(this, 3)
+                    ImagePicker.getImages(this, 3, ImagePicker.REQUEST_CODE_GET_IMAGES)
                 } else {
                     Toast.makeText(
                         this,
@@ -102,12 +104,24 @@ class EditAdsAct : AppCompatActivity(), FragCLoseInterface {
     }
 
     fun onClickGetImages(view: View) {
-        ImagePicker.getImages(this, 3)
+        if (adapter.mainArray.size > 0) {
+            openChooseImageFrag(adapter.mainArray)
+        } else {
+            ImagePicker.getImages(this, 3, ImagePicker.REQUEST_CODE_GET_IMAGES)
+        }
     }
 
-    override fun onFragClose(list: ArrayList<SelectRvItem>) {
+    override fun onFragClose(list: ArrayList<String>) {
         rootElement.scrollViewMain.visibility = View.VISIBLE
         adapter.update(list)
         chooseImageItem = null
+    }
+
+    private fun openChooseImageFrag(newList: ArrayList<String>) {
+        chooseImageItem = ImageFrag(this, newList)
+        rootElement.scrollViewMain.visibility = View.GONE
+        val fm = supportFragmentManager.beginTransaction()
+        fm.replace(R.id.place_holder, chooseImageItem!!)
+        fm.commit()
     }
 }

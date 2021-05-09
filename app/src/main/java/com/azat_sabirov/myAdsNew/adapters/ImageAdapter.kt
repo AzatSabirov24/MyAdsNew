@@ -7,10 +7,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.azat_sabirov.myAdsNew.R
-import com.azat_sabirov.myAdsNew.frag.SelectRvItem
 
 class ImageAdapter: RecyclerView.Adapter<ImageAdapter.ImageHolder>() {
-    private val mainArray = ArrayList<SelectRvItem>()
+    val mainArray = ArrayList<String>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.image_adapter_item,parent,false)
@@ -18,7 +17,7 @@ class ImageAdapter: RecyclerView.Adapter<ImageAdapter.ImageHolder>() {
     }
 
     override fun onBindViewHolder(holder: ImageHolder, position: Int) {
-       holder.setData(mainArray[position].imageUri)
+       holder.setData(mainArray[position])
     }
 
     override fun getItemCount(): Int {
@@ -32,7 +31,7 @@ class ImageAdapter: RecyclerView.Adapter<ImageAdapter.ImageHolder>() {
             imItem.setImageURI(Uri.parse(uri))
         }
     }
-    fun update(newList: ArrayList<SelectRvItem>){
+    fun update(newList: ArrayList<String>){
         mainArray.clear()
         mainArray.addAll(newList)
         notifyDataSetChanged()
