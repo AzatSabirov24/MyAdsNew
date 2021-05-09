@@ -49,7 +49,11 @@ class EditAdsAct : AppCompatActivity(), FragCLoseInterface {
 
                     openChooseImageFrag(returnValues)
 
-                } else if (chooseImageItem != null) {
+                } else if (returnValues.size == 1 && chooseImageItem == null) {
+                    adapter.update(returnValues)
+                }
+
+                else if (chooseImageItem != null) {
                     chooseImageItem?.updateAdapter(returnValues)
                 }
             }

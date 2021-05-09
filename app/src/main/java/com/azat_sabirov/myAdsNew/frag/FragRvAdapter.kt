@@ -21,7 +21,7 @@ class FragRvAdapter : RecyclerView.Adapter<FragRvAdapter.ImageViewHolder>(),
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.select_image_frag_item, parent, false)
-        return ImageViewHolder(view, parent.context)
+        return ImageViewHolder(view, parent.context, this)
     }
 
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
@@ -43,10 +43,15 @@ class FragRvAdapter : RecyclerView.Adapter<FragRvAdapter.ImageViewHolder>(),
         notifyDataSetChanged()
     }
 
-    class ImageViewHolder(itemView: View, private val context: Context) : RecyclerView.ViewHolder(itemView) {
+    class ImageViewHolder(
+        itemView: View,
+        private val context: Context,
+        val adapter: FragRvAdapter
+    ) : RecyclerView.ViewHolder(itemView) {
         lateinit var tvTitle: TextView
         lateinit var imageView: ImageView
         lateinit var imEditImage: ImageButton
+        lateinit var imDeleteImage: ImageButton
         fun setData(item: String) {
             tvTitle = itemView.findViewById(R.id.tvTitle)
             imageView = itemView.findViewById(R.id.imageView)
@@ -54,8 +59,20 @@ class FragRvAdapter : RecyclerView.Adapter<FragRvAdapter.ImageViewHolder>(),
             imageView.setImageURI(Uri.parse(item))
             imEditImage = itemView.findViewById(R.id.imEditImage)
             imEditImage.setOnClickListener {
-               ImagePicker.getImages(context as EditAdsAct, 1, ImagePicker.REQUEST_CODE_GET_SINGLE_IMAGES)
+                ImagePicker.getImages(
+                    context as EditAdsAct,
+                    1,
+                    ImagePicker.REQUEST_CODE_GET_SINGLE_IMAGES
+                )
                 context.editPos = adapterPosition
+            }
+            imDeleteImage = itemView.findViewById(R.id.imDelete)
+            imDeleteImage.setOnClickListener {
+
+                adapter.mainArray.removeAt(adapterPosition)
+                adapter.notifyItemRemoved(adapterPosition)
+                for (n in 0 until adapter.mainArray.size) adapter.notifyItemChanged(n)
+
             }
         }
     }
