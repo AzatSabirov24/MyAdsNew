@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -14,6 +15,7 @@ import com.azat_sabirov.myAdsNew.dialogs.DialogSpinnerHelper
 import com.azat_sabirov.myAdsNew.frag.FragCLoseInterface
 import com.azat_sabirov.myAdsNew.frag.ImageFrag
 import com.azat_sabirov.myAdsNew.utils.CityHelper
+import com.azat_sabirov.myAdsNew.utils.ImageManager
 import com.azat_sabirov.myAdsNew.utils.ImagePicker
 import com.fxn.pix.Pix
 import com.fxn.utility.PermUtil
@@ -50,7 +52,10 @@ class EditAdsAct : AppCompatActivity(), FragCLoseInterface {
                     openChooseImageFrag(returnValues)
 
                 } else if (returnValues.size == 1 && chooseImageItem == null) {
-                    adapter.update(returnValues)
+//                    adapter.update(returnValues)
+                    val tempList = ImageManager.getImageSize(returnValues[0])
+                    Log.d("MyLog","Image width: ${tempList[0]}")
+                    Log.d("MyLog","Image height: ${tempList[1]}")
                 }
 
                 else if (chooseImageItem != null) {
