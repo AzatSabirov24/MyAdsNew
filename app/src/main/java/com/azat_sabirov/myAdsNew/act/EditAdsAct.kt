@@ -54,8 +54,8 @@ class EditAdsAct : AppCompatActivity(), FragCLoseInterface {
                 } else if (returnValues.size == 1 && chooseImageItem == null) {
 //                    adapter.update(returnValues)
                     val tempList = ImageManager.getImageSize(returnValues[0])
-                    Log.d("MyLog","Image width: ${tempList[0]}")
-                    Log.d("MyLog","Image height: ${tempList[1]}")
+                    /*Log.d("MyLog","Image width: ${tempList[0]}")
+                    Log.d("MyLog","Image height: ${tempList[1]}")*/
                 }
 
                 else if (chooseImageItem != null) {

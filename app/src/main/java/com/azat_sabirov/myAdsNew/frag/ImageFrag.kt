@@ -1,6 +1,7 @@
 package com.azat_sabirov.myAdsNew.frag
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,8 +11,13 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.azat_sabirov.myAdsNew.R
 import com.azat_sabirov.myAdsNew.databinding.ListImageFragBinding
+import com.azat_sabirov.myAdsNew.utils.ImageManager
 import com.azat_sabirov.myAdsNew.utils.ImagePicker
 import com.azat_sabirov.myAdsNew.utils.ItemTouchMoveCallback
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
 class ImageFrag(
     private val fragmentCLoseInterface: FragCLoseInterface,
@@ -21,6 +27,7 @@ class ImageFrag(
     val dragCallback = ItemTouchMoveCallback(adapter)
     val touchHelper = ItemTouchHelper(dragCallback)
     lateinit var rootElement: ListImageFragBinding
+    lateinit var job: Job
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,12 +44,17 @@ class ImageFrag(
         touchHelper.attachToRecyclerView(rootElement.rcImageItem)
         rootElement.rcImageItem.layoutManager = LinearLayoutManager(activity)
         rootElement.rcImageItem.adapter = adapter
-        adapter.updateAdapter(newList,true)
+//        adapter.updateAdapter(newList,true)
+        job = CoroutineScope(Dispatchers.Main).launch {
+           val text = ImageManager.imageResize(newList)
+            Log.d("MyLog", "Result: $text")
+        }
     }
 
     override fun onDetach() {
         super.onDetach()
         fragmentCLoseInterface.onFragClose(adapter.mainArray)
+        job.cancel()
     }
 
     private fun setUpToolbar() {
@@ -57,22 +69,26 @@ class ImageFrag(
 
         addImageItem.setOnMenuItemClickListener {
             val imageCount = ImagePicker.MAX_IMAGE_COUNT - adapter.mainArray.size
-            ImagePicker.getImages(activity as AppCompatActivity, imageCount, ImagePicker.REQUEST_CODE_GET_IMAGES)
+            ImagePicker.getImages(
+                activity as AppCompatActivity,
+                imageCount,
+                ImagePicker.REQUEST_CODE_GET_IMAGES
+            )
             true
         }
 
         deleteImageItem.setOnMenuItemClickListener {
-            adapter.updateAdapter(ArrayList(),true)
+            adapter.updateAdapter(ArrayList(), true)
             true
         }
     }
 
-    fun updateAdapter(newList: ArrayList<String>){
+    fun updateAdapter(newList: ArrayList<String>) {
 
-        adapter.updateAdapter(newList,false)
+        adapter.updateAdapter(newList, false)
     }
 
-    fun editSingleImage(uri: String, pos: Int){
+    fun editSingleImage(uri: String, pos: Int) {
         adapter.mainArray[pos] = uri
         adapter.notifyDataSetChanged()
     }
