@@ -1,7 +1,7 @@
 package com.azat_sabirov.myAdsNew.frag
 
 import android.content.Context
-import android.net.Uri
+import android.graphics.Bitmap
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,9 +14,9 @@ import com.azat_sabirov.myAdsNew.act.EditAdsAct
 import com.azat_sabirov.myAdsNew.utils.ImagePicker
 import com.azat_sabirov.myAdsNew.utils.ItemTouchMoveCallback
 
-class FragRvAdapter : RecyclerView.Adapter<FragRvAdapter.ImageViewHolder>(),
+class SelectFragRvAdapter : RecyclerView.Adapter<SelectFragRvAdapter.ImageViewHolder>(),
     ItemTouchMoveCallback.ItemTouchAdapter {
-    val mainArray = ArrayList<String>()
+    val mainArray = ArrayList<Bitmap>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -46,17 +46,17 @@ class FragRvAdapter : RecyclerView.Adapter<FragRvAdapter.ImageViewHolder>(),
     class ImageViewHolder(
         itemView: View,
         private val context: Context,
-        val adapter: FragRvAdapter
+        val adapterSelect: SelectFragRvAdapter
     ) : RecyclerView.ViewHolder(itemView) {
         lateinit var tvTitle: TextView
         lateinit var imageView: ImageView
         lateinit var imEditImage: ImageButton
         lateinit var imDeleteImage: ImageButton
-        fun setData(item: String) {
+        fun setData(bitmap: Bitmap) {
             tvTitle = itemView.findViewById(R.id.tvTitle)
             imageView = itemView.findViewById(R.id.imageView)
             tvTitle.text = context.resources.getStringArray(R.array.title_array)[adapterPosition]
-            imageView.setImageURI(Uri.parse(item))
+            imageView.setImageBitmap(bitmap)
             imEditImage = itemView.findViewById(R.id.imEditImage)
             imEditImage.setOnClickListener {
                 ImagePicker.getImages(
@@ -69,15 +69,15 @@ class FragRvAdapter : RecyclerView.Adapter<FragRvAdapter.ImageViewHolder>(),
             imDeleteImage = itemView.findViewById(R.id.imDelete)
             imDeleteImage.setOnClickListener {
 
-                adapter.mainArray.removeAt(adapterPosition)
-                adapter.notifyItemRemoved(adapterPosition)
-                for (n in 0 until adapter.mainArray.size) adapter.notifyItemChanged(n)
+                adapterSelect.mainArray.removeAt(adapterPosition)
+                adapterSelect.notifyItemRemoved(adapterPosition)
+                for (n in 0 until adapterSelect.mainArray.size) adapterSelect.notifyItemChanged(n)
 
             }
         }
     }
 
-    fun updateAdapter(newList: List<String>, needClearList: Boolean) {
+    fun updateAdapter(newList: List<Bitmap>, needClearList: Boolean) {
         if (needClearList) mainArray.clear()
         mainArray.addAll(newList)
         notifyDataSetChanged()

@@ -1,10 +1,9 @@
 package com.azat_sabirov.myAdsNew.act
 
-import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -25,7 +24,7 @@ class EditAdsAct : AppCompatActivity(), FragCLoseInterface {
     private var chooseImageItem: ImageFrag? = null
     lateinit var rootElement: ActivityEditAdsBinding
     private val dialog = DialogSpinnerHelper()
-    val adapter = ImageAdapter()
+    val imageAdapter = ImageAdapter()
     var editPos = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,7 +36,7 @@ class EditAdsAct : AppCompatActivity(), FragCLoseInterface {
 
     private fun init() {
 
-        rootElement.vpImages.adapter = adapter
+        rootElement.vpImages.adapter = imageAdapter
 
     }
 
@@ -113,20 +112,21 @@ class EditAdsAct : AppCompatActivity(), FragCLoseInterface {
     }
 
     fun onClickGetImages(view: View) {
-        if (adapter.mainArray.size > 0) {
-            openChooseImageFrag(adapter.mainArray)
-        } else {
+        if (imageAdapter.mainArray.size == 0) {
             ImagePicker.getImages(this, 3, ImagePicker.REQUEST_CODE_GET_IMAGES)
+        } else {
+            openChooseImageFrag(null)
+            chooseImageItem?.updateAdapterFromEdit(imageAdapter.mainArray)
         }
     }
 
-    override fun onFragClose(list: ArrayList<String>) {
+    override fun onFragClose(list: ArrayList<Bitmap>) {
         rootElement.scrollViewMain.visibility = View.VISIBLE
-        adapter.update(list)
+        imageAdapter.update(list)
         chooseImageItem = null
     }
 
-    private fun openChooseImageFrag(newList: ArrayList<String>) {
+    private fun openChooseImageFrag(newList: ArrayList<String>?) {
         chooseImageItem = ImageFrag(this, newList)
         rootElement.scrollViewMain.visibility = View.GONE
         val fm = supportFragmentManager.beginTransaction()

@@ -1,11 +1,10 @@
 package com.azat_sabirov.myAdsNew.utils
 
 import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.azat_sabirov.myAdsNew.frag.FragRvAdapter
+import com.azat_sabirov.myAdsNew.frag.SelectFragRvAdapter
 
-class ItemTouchMoveCallback (val adapter: FragRvAdapter): ItemTouchHelper.Callback(){
+class ItemTouchMoveCallback (val adapterSelect: SelectFragRvAdapter): ItemTouchHelper.Callback(){
     override fun getMovementFlags(
         recyclerView: RecyclerView,
         viewHolder: RecyclerView.ViewHolder
@@ -19,7 +18,7 @@ class ItemTouchMoveCallback (val adapter: FragRvAdapter): ItemTouchHelper.Callba
         viewHolder: RecyclerView.ViewHolder,
         target: RecyclerView.ViewHolder
     ): Boolean {
-        adapter.onMove(viewHolder.adapterPosition, target.adapterPosition)
+        adapterSelect.onMove(viewHolder.adapterPosition, target.adapterPosition)
        return true
     }
 
@@ -34,7 +33,7 @@ class ItemTouchMoveCallback (val adapter: FragRvAdapter): ItemTouchHelper.Callba
 
     override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
         viewHolder.itemView.alpha = 1.0f
-        adapter.onClear()
+        adapterSelect.onClear()
         super.clearView(recyclerView, viewHolder)
     }
     interface ItemTouchAdapter{

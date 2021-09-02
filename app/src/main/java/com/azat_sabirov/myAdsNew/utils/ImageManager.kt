@@ -1,14 +1,17 @@
 package com.azat_sabirov.myAdsNew.utils
 
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.util.Log
 import androidx.exifinterface.media.ExifInterface
+import com.squareup.picasso.Picasso
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import java.io.File
 
 object ImageManager {
 
+    const val TAG = "MyLog"
     const val MAX_IMAGE_SIZE = 1000
     const val WIDTH = 0
     const val HEIGHT = 1
@@ -37,8 +40,9 @@ object ImageManager {
         return rotation
     }
 
-    suspend fun imageResize(uris: List<String>): String = withContext(Dispatchers.IO) {
+    suspend fun imageResize(uris: List<String>): List<Bitmap> = withContext(Dispatchers.IO) {
         val tempList = ArrayList<List<Int>>()
+        val bitmapList = ArrayList<Bitmap>()
         for (n in uris.indices) {
             val size = getImageSize(uris[n])
             val imageRatio = size[WIDTH].toFloat() / size[HEIGHT].toFloat()
@@ -56,7 +60,16 @@ object ImageManager {
                 }
             }
         }
-        delay(10000)
-        return@withContext "Done"
+        for (i in uris.indices) {
+            val e = kotlin.runCatching {
+                bitmapList.add(
+                    Picasso.get().load(File(uris[i]))
+                        .resize(tempList[i][WIDTH], tempList[i][HEIGHT])
+                        .get())
+            }
+            Log.d(TAG, "imageResize: ${e.isSuccess}")
+        }
+
+        return@withContext bitmapList
     }
 }

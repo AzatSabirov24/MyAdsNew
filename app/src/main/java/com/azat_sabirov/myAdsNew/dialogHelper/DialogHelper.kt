@@ -81,6 +81,4 @@ class DialogHelper(private val act: MainActivity) {
                 }
         }
     }
-
-
 }
