@@ -18,6 +18,9 @@ import com.azat_sabirov.myAdsNew.utils.ImageManager
 import com.azat_sabirov.myAdsNew.utils.ImagePicker
 import com.fxn.pix.Pix
 import com.fxn.utility.PermUtil
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class EditAdsAct : AppCompatActivity(), FragCLoseInterface {
@@ -51,10 +54,10 @@ class EditAdsAct : AppCompatActivity(), FragCLoseInterface {
                     openChooseImageFrag(returnValues)
 
                 } else if (returnValues.size == 1 && chooseImageItem == null) {
-//                    adapter.update(returnValues)
-                    val tempList = ImageManager.getImageSize(returnValues[0])
-                    /*Log.d("MyLog","Image width: ${tempList[0]}")
-                    Log.d("MyLog","Image height: ${tempList[1]}")*/
+                    CoroutineScope(Dispatchers.Main).launch {
+                        val bitMapArray = ImageManager.imageResize(returnValues) as ArrayList<Bitmap>
+                        imageAdapter.update(bitMapArray)
+                    }
                 }
 
                 else if (chooseImageItem != null) {
