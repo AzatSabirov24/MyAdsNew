@@ -11,17 +11,21 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.azat_sabirov.myAdsNew.R
 import com.azat_sabirov.myAdsNew.act.EditAdsAct
+import com.azat_sabirov.myAdsNew.databinding.SelectImageFragItemBinding
+import com.azat_sabirov.myAdsNew.utils.AdapterCallback
+import com.azat_sabirov.myAdsNew.utils.ImageManager
 import com.azat_sabirov.myAdsNew.utils.ImagePicker
 import com.azat_sabirov.myAdsNew.utils.ItemTouchMoveCallback
 
-class SelectFragRvAdapter : RecyclerView.Adapter<SelectFragRvAdapter.ImageViewHolder>(),
+class SelectFragRvAdapter(val adapterCallback: AdapterCallback) : RecyclerView.Adapter<SelectFragRvAdapter.ImageViewHolder>(),
     ItemTouchMoveCallback.ItemTouchAdapter {
     val mainArray = ArrayList<Bitmap>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.select_image_frag_item, parent, false)
-        return ImageViewHolder(view, parent.context, this)
+        val viewBinding =
+            SelectImageFragItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+
+        return ImageViewHolder(viewBinding, parent.context, this)
     }
 
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
@@ -44,20 +48,14 @@ class SelectFragRvAdapter : RecyclerView.Adapter<SelectFragRvAdapter.ImageViewHo
     }
 
     class ImageViewHolder(
-        itemView: View,
+        val viewBinding: SelectImageFragItemBinding,
         private val context: Context,
         val adapterSelect: SelectFragRvAdapter
-    ) : RecyclerView.ViewHolder(itemView) {
-        lateinit var tvTitle: TextView
-        lateinit var imageView: ImageView
-        lateinit var imEditImage: ImageButton
-        lateinit var imDeleteImage: ImageButton
-        fun setData(bitmap: Bitmap) {
-            tvTitle = itemView.findViewById(R.id.tvTitle)
-            imageView = itemView.findViewById(R.id.imageView)
+    ) : RecyclerView.ViewHolder(viewBinding.root) {
+
+        fun setData(bitmap: Bitmap) = with(viewBinding) {
             tvTitle.text = context.resources.getStringArray(R.array.title_array)[adapterPosition]
             imageView.setImageBitmap(bitmap)
-            imEditImage = itemView.findViewById(R.id.imEditImage)
             imEditImage.setOnClickListener {
                 ImagePicker.getImages(
                     context as EditAdsAct,
@@ -66,13 +64,11 @@ class SelectFragRvAdapter : RecyclerView.Adapter<SelectFragRvAdapter.ImageViewHo
                 )
                 context.editPos = adapterPosition
             }
-            imDeleteImage = itemView.findViewById(R.id.imDelete)
-            imDeleteImage.setOnClickListener {
-
+            imDelete.setOnClickListener {
                 adapterSelect.mainArray.removeAt(adapterPosition)
                 adapterSelect.notifyItemRemoved(adapterPosition)
                 for (n in 0 until adapterSelect.mainArray.size) adapterSelect.notifyItemChanged(n)
-
+                adapterSelect.adapterCallback.onItemDelete()
             }
         }
     }
