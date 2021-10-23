@@ -103,7 +103,6 @@ class EditAdsAct : AppCompatActivity(), FragCLoseInterface {
         if (rootElement.tvCities.toString() != getString(R.string.select_city)) {
             rootElement.tvCities.text = getString(R.string.select_city)
         }
-
     }
 
     fun onClickSelectCity(view: View) {
@@ -112,6 +111,11 @@ class EditAdsAct : AppCompatActivity(), FragCLoseInterface {
             val listCities = CityHelper.getAllCity(country, this)
             dialog.showDialogSpinner(this, listCities, rootElement.tvCities)
         } else Toast.makeText(this, R.string.select_country, Toast.LENGTH_LONG).show()
+    }
+
+    fun onClickSelectCat(view: View) {
+        val listCategories = resources.getStringArray(R.array.category).toMutableList() as ArrayList
+        dialog.showDialogSpinner(this, listCategories, rootElement.tvCat)
     }
 
     fun onClickGetImages(view: View) {

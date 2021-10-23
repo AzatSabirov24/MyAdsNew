@@ -31,6 +31,19 @@
     <string name="link_done">Email успешно подключен к Google аккаунту</string>
     <string name="enter_to_g">У вас уже есть аккаунт с таким Email адресом, войдите по нему</string>
     <string name="sign_up_or_sign_in_with_google">Зарегистрируйтесь или войдите по Google аккаунту</string>
-<!--    Edit Activity-->
+    <!--    Edit Activity-->
     <string name="select_country">*Выберите страну</string>
-    <string name="select_city">*Выберите город</string></resources>
+    <string name="select_city">*Выберите город</string>
+    <string name="country">Страна</string>
+    <string name="city">Город</string>
+    <string name="index">Индекс</string>
+    <string name="tel">Телефон</string>
+    <string name="select_category">*Выберите категорию</string>
+    <string name="category">Категория</string>
+    <string name="price">Цена</string>
+    <string name="price_hint">Цена</string>
+    <string name="description">Описание</string>
+    <string name="enter_description">Введите описание</string>
+    <string name="with_send">С отправкой</string>
+    <string name="publish">Опубликовать</string>
+</resources>

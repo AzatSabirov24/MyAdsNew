@@ -3,4 +3,5 @@
     <dimen name="edit_ads_card_view_corner_radius">5dp</dimen>
     <dimen name="edit_ads_linear_layout_margin">8dp</dimen>
     <dimen name="edit_ads_edit_image_btn_padding">8dp</dimen>
+    <dimen name="card_view_country_margin_top">5dp</dimen>
 </resources>
