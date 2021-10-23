@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.azat_sabirov.myAdsNew.R
 import com.azat_sabirov.myAdsNew.adapters.ImageAdapter
 import com.azat_sabirov.myAdsNew.databinding.ActivityEditAdsBinding
+import com.azat_sabirov.myAdsNew.db.DBManager
 import com.azat_sabirov.myAdsNew.dialogs.DialogSpinnerHelper
 import com.azat_sabirov.myAdsNew.frag.FragCLoseInterface
 import com.azat_sabirov.myAdsNew.frag.ImageFrag
@@ -125,6 +126,11 @@ class EditAdsAct : AppCompatActivity(), FragCLoseInterface {
             openChooseImageFrag(null)
             chooseImageItem?.updateAdapterFromEdit(imageAdapter.mainArray)
         }
+    }
+
+    fun onClickPublish(view: View){
+        val dbManager = DBManager()
+        dbManager.publishAd()
     }
 
     override fun onFragClose(list: ArrayList<Bitmap>) {
