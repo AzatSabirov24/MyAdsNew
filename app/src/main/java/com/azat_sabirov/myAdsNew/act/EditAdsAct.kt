@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.azat_sabirov.myAdsNew.R
 import com.azat_sabirov.myAdsNew.adapters.ImageAdapter
+import com.azat_sabirov.myAdsNew.data.Ad
 import com.azat_sabirov.myAdsNew.databinding.ActivityEditAdsBinding
 import com.azat_sabirov.myAdsNew.db.DBManager
 import com.azat_sabirov.myAdsNew.dialogs.DialogSpinnerHelper
@@ -30,6 +31,7 @@ class EditAdsAct : AppCompatActivity(), FragCLoseInterface {
     private val dialog = DialogSpinnerHelper()
     val imageAdapter = ImageAdapter()
     var editPos = 0
+    val dbManager = DBManager()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -129,8 +131,21 @@ class EditAdsAct : AppCompatActivity(), FragCLoseInterface {
     }
 
     fun onClickPublish(view: View){
-        val dbManager = DBManager()
-        dbManager.publishAd()
+
+        dbManager.publishAd(fillAd())
+    }
+
+    fun fillAd() : Ad = with(rootElement) {
+        return Ad(
+            tvCountry.text.toString(),
+            tvCities.text.toString(),
+            titleTelEt.text.toString(),
+            withSendCheckBox.isChecked.toString(),
+            tvCat.text.toString(),
+            titlePriceEt.text.toString(),
+            titleDescEt.text.toString(),
+            dbManager.db.push().key
+        )
     }
 
     override fun onFragClose(list: ArrayList<Bitmap>) {

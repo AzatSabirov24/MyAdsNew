@@ -257,16 +257,6 @@
                         android:background="@color/main_color"
                         android:orientation="horizontal" />
 
-                    <EditText
-                        android:id="@+id/title_desc_et"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="10dp"
-                        android:background="@null"
-                        android:ems="10"
-                        android:hint="@string/enter_description" />
-
                     <TextView
                         android:id="@+id/title_desc_tv"
                         android:layout_width="match_parent"
@@ -276,6 +266,16 @@
                         android:text="@string/description"
                         android:textColor="@color/main_color"
                         android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/title_desc_et"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@null"
+                        android:ems="10"
+                        android:hint="@string/enter_description" />
 
                     <LinearLayout
                         android:id="@+id/divider6"
