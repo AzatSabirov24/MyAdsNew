@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import com.azat_sabirov.myAdsNew.act.EditAdsAct
 import com.azat_sabirov.myAdsNew.databinding.ActivityMainBinding
+import com.azat_sabirov.myAdsNew.db.DBManager
 import com.azat_sabirov.myAdsNew.dialogHelper.DialogConstants
 import com.azat_sabirov.myAdsNew.dialogHelper.DialogHelper
 import com.azat_sabirov.myAdsNew.dialogHelper.GoogleAccConst
@@ -26,12 +27,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private val dialogHelper = DialogHelper(this)
     val mAuth = FirebaseAuth.getInstance()
     lateinit var tvAccount: TextView
+    val dbManager = DBManager()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         rootElement = ActivityMainBinding.inflate(layoutInflater)
         setContentView(rootElement.root)
         init()
+        dbManager.readDataFromDb()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
