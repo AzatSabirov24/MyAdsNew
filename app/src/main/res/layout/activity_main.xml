@@ -7,7 +7,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:fitsSystemWindows="true"
     tools:openDrawer="start"
-    tools:context=".MainActivity">
+    tools:context=".act.MainActivity">
 
     <include layout="@layout/main_content"
         android:id="@+id/mainContent"

@@ -3,7 +3,7 @@ package com.azat_sabirov.myAdsNew.dialogHelper
 import android.app.AlertDialog
 import android.view.View
 import android.widget.Toast
-import com.azat_sabirov.myAdsNew.MainActivity
+import com.azat_sabirov.myAdsNew.act.MainActivity
 import com.azat_sabirov.myAdsNew.R
 import com.azat_sabirov.myAdsNew.accountHelper.AccountHelper
 import com.azat_sabirov.myAdsNew.databinding.SignDialogBinding

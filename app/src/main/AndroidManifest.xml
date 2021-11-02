@@ -14,7 +14,7 @@
         <activity android:name=".act.EditAdsAct">
 
         </activity>
-        <activity android:name=".MainActivity">
+        <activity android:name=".act.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

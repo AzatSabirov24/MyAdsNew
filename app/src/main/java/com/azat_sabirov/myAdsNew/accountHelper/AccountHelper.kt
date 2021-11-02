@@ -3,7 +3,7 @@ package com.azat_sabirov.myAdsNew.accountHelper
 import android.util.Log
 import android.widget.Toast
 import com.azat_sabirov.ads.constants.FireBaseAuthConstants
-import com.azat_sabirov.myAdsNew.MainActivity
+import com.azat_sabirov.myAdsNew.act.MainActivity
 import com.azat_sabirov.myAdsNew.R
 import com.azat_sabirov.myAdsNew.dialogHelper.GoogleAccConst
 import com.google.android.gms.auth.api.signin.GoogleSignIn

@@ -11,7 +11,6 @@ class AdsRcAdapter : RecyclerView.Adapter<AdsRcAdapter.AdsVH>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AdsVH {
         val binding = AdListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-
         return AdsVH(binding)
     }
 
@@ -37,6 +36,7 @@ class AdsRcAdapter : RecyclerView.Adapter<AdsRcAdapter.AdsVH>() {
             ad.apply {
                 descTv.text = desc
                 priceTv.text = price
+                titleTv.text = title
             }
         }
     }

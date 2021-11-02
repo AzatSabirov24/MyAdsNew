@@ -9,7 +9,7 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
-class DBManager {
+class DBManager(val readDataCallback: ReadDataCallback?) {
     val db = Firebase.database.getReference("main")
     val auth = Firebase.auth
 
@@ -27,12 +27,12 @@ class DBManager {
                     val ad = item.children.iterator().next().child("ad").getValue(Ad::class.java)
                     ad?.let { adsArray.add(ad) }
                 }
+                readDataCallback?.readData(adsArray)
             }
 
             override fun onCancelled(error: DatabaseError) {
                 TODO("Not yet implemented")
             }
-
         })
     }
 }

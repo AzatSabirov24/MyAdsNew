@@ -31,7 +31,7 @@ class EditAdsAct : AppCompatActivity(), FragCLoseInterface {
     private val dialog = DialogSpinnerHelper()
     val imageAdapter = ImageAdapter()
     var editPos = 0
-    val dbManager = DBManager()
+    private val dbManager = DBManager(null)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,7 +41,6 @@ class EditAdsAct : AppCompatActivity(), FragCLoseInterface {
     }
 
     private fun init() {
-
         rootElement.vpImages.adapter = imageAdapter
 
     }
@@ -58,16 +57,15 @@ class EditAdsAct : AppCompatActivity(), FragCLoseInterface {
 
                 } else if (returnValues.size == 1 && chooseImageItem == null) {
                     CoroutineScope(Dispatchers.Main).launch {
-                        val bitMapArray = ImageManager.imageResize(returnValues) as ArrayList<Bitmap>
+                        val bitMapArray =
+                            ImageManager.imageResize(returnValues) as ArrayList<Bitmap>
                         imageAdapter.update(bitMapArray)
                     }
-                }
-
-                else if (chooseImageItem != null) {
+                } else if (chooseImageItem != null) {
                     chooseImageItem?.updateAdapter(returnValues)
                 }
             }
-        } else if (resultCode == RESULT_OK && requestCode == ImagePicker.REQUEST_CODE_GET_SINGLE_IMAGES){
+        } else if (resultCode == RESULT_OK && requestCode == ImagePicker.REQUEST_CODE_GET_SINGLE_IMAGES) {
             if (data != null) {
                 val uris = data.getStringArrayListExtra(Pix.IMAGE_RESULTS)
                 chooseImageItem?.editSingleImage(uris?.get(0)!!, editPos)
@@ -130,18 +128,19 @@ class EditAdsAct : AppCompatActivity(), FragCLoseInterface {
         }
     }
 
-    fun onClickPublish(view: View){
+    fun onClickPublish(view: View) {
 
         dbManager.publishAd(fillAd())
     }
 
-    fun fillAd() : Ad = with(rootElement) {
+    fun fillAd(): Ad = with(rootElement) {
         return Ad(
             tvCountry.text.toString(),
             tvCities.text.toString(),
             titleTelEt.text.toString(),
             withSendCheckBox.isChecked.toString(),
             tvCat.text.toString(),
+            titleEt.text.toString(),
             titlePriceEt.text.toString(),
             titleDescEt.text.toString(),
             dbManager.db.push().key

@@ -46,4 +46,6 @@
     <string name="enter_description">Введите описание</string>
     <string name="with_send">С отправкой</string>
     <string name="publish">Опубликовать</string>
+    <string name="title_tv">*Название</string>
+    <string name="title_et_hint">Название объявления</string>
 </resources>
