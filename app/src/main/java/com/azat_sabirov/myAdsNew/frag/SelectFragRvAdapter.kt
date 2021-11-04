@@ -57,11 +57,7 @@ class SelectFragRvAdapter(val adapterCallback: AdapterCallback) : RecyclerView.A
             tvTitle.text = context.resources.getStringArray(R.array.title_array)[adapterPosition]
             imageView.setImageBitmap(bitmap)
             imEditImage.setOnClickListener {
-                ImagePicker.getImages(
-                    context as EditAdsAct,
-                    1,
-                    ImagePicker.REQUEST_CODE_GET_SINGLE_IMAGES
-                )
+                ImagePicker.launcher(context as EditAdsAct, context.launcherSingleSelectImage, 1)
                 context.editPos = adapterPosition
             }
             imDelete.setOnClickListener {

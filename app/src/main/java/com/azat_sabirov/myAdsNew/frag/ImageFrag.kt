@@ -8,12 +8,12 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.azat_sabirov.myAdsNew.R
+import com.azat_sabirov.myAdsNew.act.EditAdsAct
 import com.azat_sabirov.myAdsNew.databinding.ListImageFragBinding
 import com.azat_sabirov.myAdsNew.dialogHelper.ProgressDialog
 import com.azat_sabirov.myAdsNew.utils.AdapterCallback
@@ -74,7 +74,7 @@ class ImageFrag(
             val bitmapList = ImageManager.imageResize(newList)
             dialog.dismiss()
             adapter.updateAdapter(bitmapList, needClear)
-            if(adapter.mainArray.size > 2) addImageItem?.isVisible = false
+            if (adapter.mainArray.size > 2) addImageItem?.isVisible = false
         }
     }
 
@@ -90,10 +90,10 @@ class ImageFrag(
 
         addImageItem?.setOnMenuItemClickListener {
             val imageCount = ImagePicker.MAX_IMAGE_COUNT - adapter.mainArray.size
-            ImagePicker.getImages(
-                activity as AppCompatActivity,
-                imageCount,
-                ImagePicker.REQUEST_CODE_GET_IMAGES
+            ImagePicker.launcher(
+                activity as EditAdsAct,
+                (activity as EditAdsAct).launcherMultiSelectImages,
+                imageCount
             )
             true
         }
