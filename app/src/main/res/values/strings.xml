@@ -48,4 +48,9 @@
     <string name="publish">Опубликовать</string>
     <string name="title_tv">*Название</string>
     <string name="title_et_hint">Название объявления</string>
+
+    <!--    AdListItem-->
+    <string name="price_desc">Цена:</string>
+
+
 </resources>

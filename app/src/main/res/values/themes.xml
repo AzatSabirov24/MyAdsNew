@@ -23,7 +23,9 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item>
+    </style>
 
-
+    <style name="ToolbarMainStyle" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:colorControlNormal">@color/main_color</item>
     </style>
 </resources>
