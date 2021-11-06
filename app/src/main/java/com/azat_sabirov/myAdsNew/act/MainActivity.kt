@@ -11,31 +11,28 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.activity.viewModels
 import com.azat_sabirov.myAdsNew.R
 import com.azat_sabirov.myAdsNew.adapters.AdsRcAdapter
-import com.azat_sabirov.myAdsNew.data.Ad
 import com.azat_sabirov.myAdsNew.databinding.ActivityMainBinding
-import com.azat_sabirov.myAdsNew.db.DBManager
-import com.azat_sabirov.myAdsNew.db.ReadDataCallback
 import com.azat_sabirov.myAdsNew.dialogHelper.DialogConstants
 import com.azat_sabirov.myAdsNew.dialogHelper.DialogHelper
 import com.azat_sabirov.myAdsNew.dialogHelper.GoogleAccConst
+import com.azat_sabirov.myAdsNew.viewmodel.FirebaseViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.ApiException
 import com.google.android.material.navigation.NavigationView
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, ReadDataCallback {
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     lateinit var rootElement: ActivityMainBinding
     private val dialogHelper = DialogHelper(this)
     val mAuth = Firebase.auth
     lateinit var tvAccount: TextView
-    private val dbManager = DBManager(this)
     private val adsRcAdapter = AdsRcAdapter(mAuth)
+    private val firebaseViewModel: FirebaseViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +40,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setContentView(rootElement.root)
         init()
         iniRecyclerView()
-        dbManager.readDataFromDb()
+        initViewModel()
+        firebaseViewModel.loadAllAds()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -54,10 +52,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.main_menu,menu)
         return super.onCreateOptionsMenu(menu)
     }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == GoogleAccConst.GOOGLE_SIGN_IN_REQUEST_CODE) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
@@ -86,6 +85,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         rootElement.drawerLayout.addDrawerListener(toggle)
         rootElement.navView.setNavigationItemSelectedListener(this)
         tvAccount = rootElement.navView.getHeaderView(0).findViewById(R.id.tvAccountEmail)
+    }
+
+    private fun initViewModel() {
+        firebaseViewModel.liveAdsData.observe(this, {
+            adsRcAdapter.updateAdapter(it)
+        })
     }
 
     private fun iniRecyclerView() = with(rootElement){
@@ -143,9 +148,5 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         tvAccount.text = if (user == null) {
             resources.getString(R.string.not_reg)
         } else user.email
-    }
-
-    override fun readData(list: List<Ad>) {
-        adsRcAdapter.updateAdapter(list)
     }
 }

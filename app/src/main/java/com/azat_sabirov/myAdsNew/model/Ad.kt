@@ -1,4 +1,4 @@
-package com.azat_sabirov.myAdsNew.data
+package com.azat_sabirov.myAdsNew.model
 
 data class Ad(
     val country: String? = null,

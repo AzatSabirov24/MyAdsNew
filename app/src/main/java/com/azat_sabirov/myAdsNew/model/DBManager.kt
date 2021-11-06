@@ -1,7 +1,5 @@
-package com.azat_sabirov.myAdsNew.db
+package com.azat_sabirov.myAdsNew.model
 
-import android.util.Log
-import com.azat_sabirov.myAdsNew.data.Ad
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -9,21 +7,21 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
-class DBManager(val readDataCallback: ReadDataCallback?) {
+class DBManager {
     val db = Firebase.database.getReference("main")
     val auth = Firebase.auth
 
     fun publishAd(ad: Ad) {
-        if(auth != null) {
+        if (auth != null) {
             db.child(ad.key ?: "empty").child(auth.uid!!).child("ad").setValue(ad)
         }
     }
 
-    fun readDataFromDb(){
-        db.addListenerForSingleValueEvent(object: ValueEventListener{
+    fun readDataFromDb(readDataCallback: ReadDataCallback?) {
+        db.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val adsArray = mutableListOf<Ad>()
-                for (item in snapshot.children){
+                val adsArray = ArrayList<Ad>()
+                for (item in snapshot.children) {
                     val ad = item.children.iterator().next().child("ad").getValue(Ad::class.java)
                     ad?.let { adsArray.add(ad) }
                 }
@@ -34,5 +32,9 @@ class DBManager(val readDataCallback: ReadDataCallback?) {
                 TODO("Not yet implemented")
             }
         })
+    }
+
+    interface ReadDataCallback {
+        fun readData(list: ArrayList<Ad>)
     }
 }

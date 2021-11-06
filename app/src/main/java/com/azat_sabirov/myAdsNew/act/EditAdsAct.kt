@@ -10,9 +10,9 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AppCompatActivity
 import com.azat_sabirov.myAdsNew.R
 import com.azat_sabirov.myAdsNew.adapters.ImageAdapter
-import com.azat_sabirov.myAdsNew.data.Ad
+import com.azat_sabirov.myAdsNew.model.Ad
 import com.azat_sabirov.myAdsNew.databinding.ActivityEditAdsBinding
-import com.azat_sabirov.myAdsNew.db.DBManager
+import com.azat_sabirov.myAdsNew.model.DBManager
 import com.azat_sabirov.myAdsNew.dialogs.DialogSpinnerHelper
 import com.azat_sabirov.myAdsNew.frag.FragCLoseInterface
 import com.azat_sabirov.myAdsNew.frag.ImageFrag
@@ -27,7 +27,7 @@ class EditAdsAct : AppCompatActivity(), FragCLoseInterface {
     private val dialog = DialogSpinnerHelper()
     val imageAdapter = ImageAdapter()
     var editPos = 0
-    private val dbManager = DBManager(null)
+    private val dbManager = DBManager()
     var launcherMultiSelectImages: ActivityResultLauncher<Intent>? = null
     var launcherSingleSelectImage: ActivityResultLauncher<Intent>? = null
 

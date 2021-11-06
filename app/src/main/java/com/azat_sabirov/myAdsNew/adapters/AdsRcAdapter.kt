@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.azat_sabirov.myAdsNew.data.Ad
+import com.azat_sabirov.myAdsNew.model.Ad
 import com.azat_sabirov.myAdsNew.databinding.AdListItemBinding
 import com.google.firebase.auth.FirebaseAuth
 
