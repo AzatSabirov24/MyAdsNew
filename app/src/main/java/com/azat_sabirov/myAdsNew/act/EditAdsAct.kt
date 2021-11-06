@@ -44,34 +44,7 @@ class EditAdsAct : AppCompatActivity(), FragCLoseInterface {
         launcherSingleSelectImage = ImagePicker.getLauncherForSingleImage(this)
     }
 
-    /*override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == RESULT_OK && requestCode == ImagePicker.REQUEST_CODE_GET_IMAGES) {
-            if (data != null) {
-                val returnValues = data.getStringArrayListExtra(Pix.IMAGE_RESULTS)
 
-                if (returnValues?.size!! > 1 && chooseImageItem == null) {
-
-                    openChooseImageFrag(returnValues)
-
-                } else if (returnValues.size == 1 && chooseImageItem == null) {
-                    CoroutineScope(Dispatchers.Main).launch {
-                        val bitMapArray =
-                            ImageManager.imageResize(returnValues) as ArrayList<Bitmap>
-                        imageAdapter.update(bitMapArray)
-                    }
-                } else if (chooseImageItem != null) {
-                    chooseImageItem?.updateAdapter(returnValues)
-                }
-            }
-        } else if (resultCode == RESULT_OK && requestCode == ImagePicker.REQUEST_CODE_GET_SINGLE_IMAGES) {
-            if (data != null) {
-                val uris = data.getStringArrayListExtra(Pix.IMAGE_RESULTS)
-                chooseImageItem?.editSingleImage(uris?.get(0)!!, editPos)
-            }
-        }
-    }
-*/
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -80,9 +53,7 @@ class EditAdsAct : AppCompatActivity(), FragCLoseInterface {
         when (requestCode) {
             PermUtil.REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS -> {
 
-                // If request is cancelled, the result arrays are empty.
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                    ImagePicker.getImages(this, 3, ImagePicker.REQUEST_CODE_GET_IMAGES)
                 } else {
                     Toast.makeText(
                         this,
@@ -95,8 +66,6 @@ class EditAdsAct : AppCompatActivity(), FragCLoseInterface {
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
-
-    //On Clicks
 
     fun onClickSelectCountry(view: View) {
         val listCountries = CityHelper.getAllCountries(this)
@@ -142,7 +111,8 @@ class EditAdsAct : AppCompatActivity(), FragCLoseInterface {
             titleEt.text.toString(),
             titlePriceEt.text.toString(),
             titleDescEt.text.toString(),
-            dbManager.db.push().key
+            dbManager.db.push().key,
+            dbManager.auth.uid
         )
     }
 

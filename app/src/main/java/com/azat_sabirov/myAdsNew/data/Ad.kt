@@ -9,5 +9,6 @@ data class Ad(
     val title: String? = null,
     val price: String? = null,
     val desc: String? = null,
-    val key: String? = null
+    val key: String? = null,
+    val uid: String? = null
 )
