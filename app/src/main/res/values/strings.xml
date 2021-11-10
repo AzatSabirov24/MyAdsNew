@@ -51,6 +51,7 @@
 
     <!--    AdListItem-->
     <string name="price_desc">Цена:</string>
+    <string name="def_ads">Разное</string>
 
 
 </resources>
