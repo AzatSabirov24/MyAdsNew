@@ -10,12 +10,12 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AppCompatActivity
 import com.azat_sabirov.myAdsNew.R
 import com.azat_sabirov.myAdsNew.adapters.ImageAdapter
-import com.azat_sabirov.myAdsNew.model.Ad
 import com.azat_sabirov.myAdsNew.databinding.ActivityEditAdsBinding
-import com.azat_sabirov.myAdsNew.model.DBManager
 import com.azat_sabirov.myAdsNew.dialogs.DialogSpinnerHelper
 import com.azat_sabirov.myAdsNew.frag.FragCLoseInterface
 import com.azat_sabirov.myAdsNew.frag.ImageFrag
+import com.azat_sabirov.myAdsNew.model.Ad
+import com.azat_sabirov.myAdsNew.model.DBManager
 import com.azat_sabirov.myAdsNew.utils.CityHelper
 import com.azat_sabirov.myAdsNew.utils.ImagePicker
 import com.fxn.utility.PermUtil
@@ -36,6 +36,7 @@ class EditAdsAct : AppCompatActivity(), FragCLoseInterface {
         rootElement = ActivityEditAdsBinding.inflate(layoutInflater)
         setContentView(rootElement.root)
         init()
+        checkEditState()
     }
 
     private fun init() {
@@ -44,6 +45,26 @@ class EditAdsAct : AppCompatActivity(), FragCLoseInterface {
         launcherSingleSelectImage = ImagePicker.getLauncherForSingleImage(this)
     }
 
+    private fun checkEditState() {
+        if (isEditState()) fillViews(intent.getSerializableExtra(MainActivity.ADS_DATA) as Ad)
+    }
+
+    private fun isEditState(): Boolean {
+        return intent.getBooleanExtra(MainActivity.EDIT_STATE, false)
+    }
+
+    private fun fillViews(ad: Ad) = with(rootElement) {
+        ad.apply {
+            tvCountry.text = country
+            tvCities.text = city
+            titleTelEt.setText(tel)
+            withSendCheckBox.isChecked = withSend.toBoolean()
+            tvCat.text = category
+            titleEt.setText(title)
+            titlePriceEt.setText(price)
+            titleDescEt.setText(desc)
+        }
+    }
 
     override fun onRequestPermissionsResult(
         requestCode: Int,

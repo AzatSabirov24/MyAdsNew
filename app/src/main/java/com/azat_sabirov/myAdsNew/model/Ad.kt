@@ -1,5 +1,7 @@
 package com.azat_sabirov.myAdsNew.model
 
+import java.io.Serializable
+
 data class Ad(
     val country: String? = null,
     val city: String? = null,
@@ -11,4 +13,4 @@ data class Ad(
     val desc: String? = null,
     val key: String? = null,
     val uid: String? = null
-)
+): Serializable
