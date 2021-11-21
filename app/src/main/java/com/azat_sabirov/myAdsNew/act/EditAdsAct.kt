@@ -30,6 +30,8 @@ class EditAdsAct : AppCompatActivity(), FragCLoseInterface {
     private val dbManager = DBManager()
     var launcherMultiSelectImages: ActivityResultLauncher<Intent>? = null
     var launcherSingleSelectImage: ActivityResultLauncher<Intent>? = null
+    private var isEditState = false
+    private var ad: Ad? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,7 +48,11 @@ class EditAdsAct : AppCompatActivity(), FragCLoseInterface {
     }
 
     private fun checkEditState() {
-        if (isEditState()) fillViews(intent.getSerializableExtra(MainActivity.ADS_DATA) as Ad)
+        isEditState = isEditState()
+        if (isEditState) {
+            ad = intent.getSerializableExtra(MainActivity.ADS_DATA) as Ad
+            ad?.let { fillViews(ad!!) }
+        }
     }
 
     private fun isEditState(): Boolean {
@@ -119,7 +125,20 @@ class EditAdsAct : AppCompatActivity(), FragCLoseInterface {
     }
 
     fun onClickPublish(view: View) {
-        dbManager.publishAd(fillAd())
+        val adTemp = fillAd()
+        if (isEditState) {
+            dbManager.publishAd(adTemp.copy(key = ad?.key), onPublishFinish())
+        } else {
+            dbManager.publishAd(adTemp, onPublishFinish())
+        }
+    }
+
+    private fun onPublishFinish(): DBManager.FinishWorkListener{
+        return object : DBManager.FinishWorkListener{
+            override fun onFinish() {
+                finish()
+            }
+        }
     }
 
     fun fillAd(): Ad = with(rootElement) {

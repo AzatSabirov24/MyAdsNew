@@ -12,18 +12,21 @@ class DBManager {
     val db = Firebase.database.getReference("main")
     val auth = Firebase.auth
 
-    fun publishAd(ad: Ad) {
+    fun publishAd(ad: Ad, finishWorkListener: FinishWorkListener) {
         if (auth != null) {
             db.child(ad.key ?: "empty").child(auth.uid!!).child("ad").setValue(ad)
+                .addOnCanceledListener {
+                    finishWorkListener.onFinish()
+                }
         }
     }
 
-    fun getMyAds(readDataCallback: ReadDataCallback?){
+    fun getMyAds(readDataCallback: ReadDataCallback?) {
         val query = db.orderByChild(auth.uid + "/ad/uid").equalTo(auth.uid)
         readDataFromDb(query, readDataCallback)
     }
 
-    fun getAllAds(readDataCallback: ReadDataCallback?){
+    fun getAllAds(readDataCallback: ReadDataCallback?) {
         val query = db.orderByChild(auth.uid + "/ad/price")
         readDataFromDb(query, readDataCallback)
     }
@@ -47,5 +50,9 @@ class DBManager {
 
     interface ReadDataCallback {
         fun readData(list: ArrayList<Ad>)
+    }
+
+    interface FinishWorkListener {
+        fun onFinish()
     }
 }
