@@ -17,6 +17,7 @@ import com.azat_sabirov.myAdsNew.databinding.ActivityMainBinding
 import com.azat_sabirov.myAdsNew.dialogHelper.DialogConstants
 import com.azat_sabirov.myAdsNew.dialogHelper.DialogHelper
 import com.azat_sabirov.myAdsNew.dialogHelper.GoogleAccConst
+import com.azat_sabirov.myAdsNew.model.Ad
 import com.azat_sabirov.myAdsNew.viewmodel.FirebaseViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.ApiException
@@ -25,7 +26,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, AdsRcAdapter.DeleteItemListener {
     lateinit var binding: ActivityMainBinding
     private val dialogHelper = DialogHelper(this)
     val mAuth = Firebase.auth
@@ -168,5 +169,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     companion object {
         const val EDIT_STATE = "edit_state"
         const val ADS_DATA = "ads_data"
+    }
+
+    override fun onDeleteItem(ad: Ad) {
+        firebaseViewModel.deleteItem(ad)
     }
 }
