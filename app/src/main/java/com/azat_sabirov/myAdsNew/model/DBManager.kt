@@ -13,12 +13,17 @@ class DBManager {
     val auth = Firebase.auth
 
     fun publishAd(ad: Ad, finishWorkListener: FinishWorkListener) {
-        if (auth != null) {
-            db.child(ad.key ?: "empty").child(auth.uid!!).child("ad").setValue(ad)
-                .addOnCanceledListener {
-                    finishWorkListener.onFinish()
-                }
-        }
+        db.child(ad.key ?: "empty").child(auth.uid!!).child("ad").setValue(ad)
+            .addOnCanceledListener {
+                finishWorkListener.onFinish()
+            }
+    }
+
+    fun adViewed(ad: Ad) {
+        var counter = ad.viewsCounter.toInt()
+        counter++
+        db.child(ad.key ?: "empty").child(INFO_NODE)
+            .setValue(InfoItem(counter.toString(), ad.emailsCounter, ad.callsCounter))
     }
 
     fun deleteAd(ad: Ad, listener: FinishWorkListener) {
@@ -43,8 +48,15 @@ class DBManager {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val adsArray = ArrayList<Ad>()
                 for (item in snapshot.children) {
-                    val ad = item.children.iterator().next().child("ad").getValue(Ad::class.java)
-                    ad?.let { adsArray.add(ad) }
+                    var ad: Ad? = null
+                    item.children.forEach {
+                        if (ad == null) ad = it.child(AD_NODE).getValue(Ad::class.java)
+                    }
+                    val infoItem = item.child(INFO_NODE).getValue(InfoItem::class.java)
+                    ad?.viewsCounter = infoItem?.viewsCounter ?: "0"
+                    ad?.emailsCounter = infoItem?.emailsCounter ?: "0"
+                    ad?.callsCounter = infoItem?.callsCounter ?: "0"
+                    ad?.let { adsArray.add(ad!!) }
                 }
                 readDataCallback?.readData(adsArray)
             }
@@ -61,5 +73,11 @@ class DBManager {
 
     interface FinishWorkListener {
         fun onFinish()
+    }
+
+    companion object {
+        const val AD_NODE = "ad"
+        const val INFO_NODE = "info"
+        const val MAIN_NODE = "main"
     }
 }
