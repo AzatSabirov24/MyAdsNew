@@ -5,12 +5,12 @@ import androidx.lifecycle.ViewModel
 import com.azat_sabirov.myAdsNew.model.Ad
 import com.azat_sabirov.myAdsNew.model.DBManager
 
-class FirebaseViewModel: ViewModel() {
+class FirebaseViewModel : ViewModel() {
     private val dbManager = DBManager()
     val liveAdsData = MutableLiveData<ArrayList<Ad>>()
 
     fun loadAllAds() {
-        dbManager.getAllAds(object : DBManager.ReadDataCallback{
+        dbManager.getAllAds(object : DBManager.ReadDataCallback {
             override fun readData(list: ArrayList<Ad>) {
                 liveAdsData.value = list
             }
@@ -22,15 +22,30 @@ class FirebaseViewModel: ViewModel() {
     }
 
     fun loadMyAds() {
-        dbManager.getMyAds(object : DBManager.ReadDataCallback{
+        dbManager.getMyAds(object : DBManager.ReadDataCallback {
             override fun readData(list: ArrayList<Ad>) {
                 liveAdsData.value = list
             }
         })
     }
 
-    fun deleteItem(ad: Ad){
-        dbManager.deleteAd(ad, object: DBManager.FinishWorkListener{
+    fun onFavClick(ad: Ad) {
+        dbManager.onFavClick(ad, object : DBManager.FinishWorkListener {
+            override fun onFinish() {
+                val updatedList = liveAdsData.value
+                val pos = updatedList?.indexOf(ad)
+                if (pos != -1) {
+                    pos?.let {
+                        updatedList[pos] = updatedList[pos].copy(isFav = !ad.isFav)
+                    }
+                }
+                liveAdsData.postValue(updatedList)
+            }
+        })
+    }
+
+    fun deleteItem(ad: Ad) {
+        dbManager.deleteAd(ad, object : DBManager.FinishWorkListener {
             override fun onFinish() {
                 val updatedList = liveAdsData.value
                 updatedList?.remove(ad)

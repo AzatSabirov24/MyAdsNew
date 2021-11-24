@@ -9,7 +9,7 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
 class DBManager {
-    val db = Firebase.database.getReference("main")
+    val db = Firebase.database.getReference(MAIN_NODE)
     val auth = Firebase.auth
 
     fun publishAd(ad: Ad, finishWorkListener: FinishWorkListener) {
@@ -30,6 +30,31 @@ class DBManager {
         if (ad.key == null || ad.uid == null) return
         db.child(ad.key).child(ad.uid).removeValue().addOnCompleteListener {
             if (it.isSuccessful) listener.onFinish()
+        }
+    }
+
+    fun onFavClick(ad: Ad, listener: FinishWorkListener) {
+        if (ad.isFav) removeFromFavs(ad, listener)
+        else addToFavs(ad, listener)
+    }
+
+    private fun addToFavs(ad: Ad, listener: FinishWorkListener) {
+        ad.key?.let {
+            auth.uid?.let { uid ->
+                db.child(it).child(FAVS_NODE).child(uid).setValue(uid).addOnCompleteListener {
+                    if (it.isSuccessful) listener.onFinish()
+                }
+            }
+        }
+    }
+
+    private fun removeFromFavs(ad: Ad, listener: FinishWorkListener) {
+        ad.key?.let {
+            auth.uid?.let { uid ->
+                db.child(it).child(FAVS_NODE).child(uid).removeValue().addOnCompleteListener {
+                    if (it.isSuccessful) listener.onFinish()
+                }
+            }
         }
     }
 
@@ -79,5 +104,6 @@ class DBManager {
         const val AD_NODE = "ad"
         const val INFO_NODE = "info"
         const val MAIN_NODE = "main"
+        const val FAVS_NODE = "favs"
     }
 }
