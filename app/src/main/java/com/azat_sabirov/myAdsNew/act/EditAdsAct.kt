@@ -152,6 +152,7 @@ class EditAdsAct : AppCompatActivity(), FragCLoseInterface {
             titlePriceEt.text.toString(),
             titleDescEt.text.toString(),
             dbManager.db.push().key,
+            "0",
             dbManager.auth.uid
         )
     }

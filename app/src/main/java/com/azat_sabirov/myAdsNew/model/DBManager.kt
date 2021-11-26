@@ -82,6 +82,10 @@ class DBManager {
                     ad?.emailsCounter = infoItem?.emailsCounter ?: "0"
                     ad?.callsCounter = infoItem?.callsCounter ?: "0"
                     ad?.let { adsArray.add(ad!!) }
+                    val favCounter = item.child(FAVS_NODE).childrenCount
+                    ad?.favCounter = favCounter.toString()
+                    val isFav = auth.uid?.let { item.child(FAVS_NODE).child(it).getValue(String :: class.java) }
+                    ad?.isFav = isFav != null
                 }
                 readDataCallback?.readData(adsArray)
             }
